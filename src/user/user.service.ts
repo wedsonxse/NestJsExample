@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -8,27 +8,28 @@ export class UserService {
 
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     try {      
-      return this.prisma.user.create({data: createUserDto})
+      return await this.prisma.user.create({data: createUserDto})
     } catch (error) {
-      throw new BadRequestException(error.message,{cause: new Error(), description: "Erro na criação de usuário"})
+      console.log('caiu no catch...')
+      throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  findAll() {
-    return this.prisma.user.findMany();
+  async findAll() {
+    return await this.prisma.user.findMany();
   }
 
-  findOne(id: string) {
-    return this.prisma.user.findUnique({where: { id }});
+  async findOne(id: string) {
+    return await this.prisma.user.findUnique({where: { id }});
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
-    return this.prisma.user.update({where: {id},data:updateUserDto});
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    return await this.prisma.user.update({where: {id},data:updateUserDto});
   }
 
-  remove(id: string) {
-    return this.prisma.user.delete({where:{id}});
+  async remove(id: string) {
+    return await this.prisma.user.delete({where:{id}});
   }
 }
