@@ -7,3 +7,5 @@ export interface IRepository<T,CreateDTO>{
   update(id: string, data: Partial<CreateDTO>): Promise<T>;
   delete(id: string): Promise<void>;
 }
+
+export const IRepository = Symbol('IRepository')

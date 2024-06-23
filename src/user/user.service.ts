@@ -1,13 +1,13 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { IRepository } from 'src/common/interfaces/IRepository';
-import { UserRepository } from './user.repository';
+import { IRepository } from 'src/common/interfaces/repository.interface.';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
 
-  constructor(private readonly repository: UserRepository) {}
+  constructor(@Inject(IRepository) private readonly repository: IRepository<User,CreateUserDto>) {}
 
   async createUser(data: CreateUserDto) {
     try {      

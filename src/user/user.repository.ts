@@ -1,4 +1,4 @@
-import { IRepository } from "src/common/interfaces/IRepository";
+import { IRepository } from "src/common/interfaces/repository.interface.";
 import { User } from "./entities/user.entity";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateUserDto } from "./dto/create-user.dto";
