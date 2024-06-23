@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -9,7 +9,11 @@ export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   create(createUserDto: CreateUserDto) {
-    return this.prisma.user.create({data: createUserDto})
+    try {      
+      return this.prisma.user.create({data: createUserDto})
+    } catch (error) {
+      throw new BadRequestException(error.message,{cause: new Error(), description: "Erro na criação de usuário"})
+    }
   }
 
   findAll() {
