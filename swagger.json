@@ -107,6 +107,27 @@
           }
         }
       }
+    },
+    "/login": {
+      "post": {
+        "operationId": "LoginController_async",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        }
+      }
     }
   },
   "info": {
@@ -152,6 +173,10 @@
         "required": [
           "id"
         ]
+      },
+      "LoginDTO": {
+        "type": "object",
+        "properties": {}
       }
     }
   }

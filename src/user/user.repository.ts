@@ -2,6 +2,7 @@ import { IRepository } from "src/common/interfaces/repository.interface.";
 import { User } from "./entities/user.entity";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateUserDto } from "./dto/create-user.dto";
+import { LoginDTO } from "src/login/dto/login.dto";
 
 export class UserRepository implements IRepository<User,CreateUserDto>{
 
@@ -9,6 +10,10 @@ export class UserRepository implements IRepository<User,CreateUserDto>{
 
     async create(data: CreateUserDto): Promise<User> {
         return await this.prisma.user.create({data})
+    }
+
+    async findByCondition(data: Partial<CreateUserDto>): Promise<User>{
+        return await this.prisma.user.findUnique({where: {email: data.email}});
     }
 
     async findAll(): Promise<User[]> {

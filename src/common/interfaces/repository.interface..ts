@@ -6,6 +6,7 @@ export interface IRepository<T,CreateDTO>{
   findOne(id: string): Promise<T>;
   update(id: string, data: Partial<CreateDTO>): Promise<T>;
   delete(id: string): Promise<void>;
+  findByCondition(data: Partial<CreateDTO>): Promise<T>;
 }
 
 export const IRepository = Symbol('IRepository')

@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpS
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import * as bcrypt from 'bcrypt'
 
 @Controller('user')
 export class UserController {
@@ -10,7 +11,7 @@ export class UserController {
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     try {      
-      return await this.userService.createUser(createUserDto);
+      return await this.userService.createUser({...createUserDto, password: bcrypt.hashSync(createUserDto.password,10)});
     } catch (error) {
       throw new BadRequestException(error.message,{cause: error.error, description: "Erro na criação de usuário"})
     }

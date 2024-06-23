@@ -17,6 +17,10 @@ export class UserService {
     }
   }
 
+  async findUserByEmail(data: Partial<CreateUserDto>){
+    return await this.repository.findByCondition(data);
+  }
+
   async findAllUsers() {
     return await this.repository.findAll();
   }
