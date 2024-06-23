@@ -10,7 +10,7 @@ export class UserController {
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     try {      
-      return await this.userService.create(createUserDto);
+      return await this.userService.createUser(createUserDto);
     } catch (error) {
       throw new BadRequestException(error.message,{cause: error.error, description: "Erro na criação de usuário"})
     }
@@ -18,21 +18,21 @@ export class UserController {
 
   @Get()
   async findAll() {
-    return await this.userService.findAll();
+    return await this.userService.findAllUsers();
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.userService.findOne(id);
+    return await this.userService.findUserById(id);
   }
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return await this.userService.update(id, updateUserDto);
+    return await this.userService.updateUser(id, updateUserDto);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return await this.userService.remove(id);
+    return await this.userService.removeUserById(id);
   }
 }

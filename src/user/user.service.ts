@@ -1,35 +1,35 @@
-import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { IRepository } from 'src/common/interfaces/IRepository';
+import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly repository: UserRepository) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async createUser(data: CreateUserDto) {
     try {      
-      return await this.prisma.user.create({data: createUserDto})
+      return await this.repository.create(data)
     } catch (error) {
-      console.log('caiu no catch...')
       throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  async findAll() {
-    return await this.prisma.user.findMany();
+  async findAllUsers() {
+    return await this.repository.findAll();
   }
 
-  async findOne(id: string) {
-    return await this.prisma.user.findUnique({where: { id }});
+  async findUserById(id: string) {
+    return await this.repository.findOne(id);
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    return await this.prisma.user.update({where: {id},data:updateUserDto});
+  async updateUser(id: string, data: UpdateUserDto) {
+    return await this.repository.update(id,data);
   }
 
-  async remove(id: string) {
-    return await this.prisma.user.delete({where:{id}});
+  async removeUserById(id: string) {
+    return await this.repository.delete(id)
   }
 }
