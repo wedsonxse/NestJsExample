@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
-import { LoginService } from './login.service';
-import { LoginController } from './login.controller';
 import { UserService } from 'src/user/user.service';
 import { IRepository } from 'src/common/interfaces/repository.interface.';
 import { UserRepository } from 'src/user/user.repository';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { JwtModule, JwtService } from '@nestjs/jwt';
-import { UserModule } from 'src/user/user.module';
+import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
 
 @Module({
   imports: [
@@ -17,15 +16,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
         signOptions: {
-          expiresIn: 30
+          expiresIn: 60
       }
     }),
     }),
   ],
-  controllers: [LoginController],
-  providers: [LoginService,UserService,{
+  controllers: [AuthController],
+  providers: [AuthService,UserService,{
     provide: IRepository,
     useFactory: ()=> new UserRepository(new PrismaService)
   }],
 })
-export class LoginModule {}
+export class AuthModule {}

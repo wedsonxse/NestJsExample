@@ -7,11 +7,11 @@ import {JwtService} from '@nestjs/jwt'
 import { authResponseDTO } from './dto/authResponse.dto';
 
 @Injectable()
-export class LoginService {
+export class AuthService {
 
     constructor(private readonly userService: UserService, private readonly jwt: JwtService) {}
 
-    async authorize(data: LoginDTO): Promise<authResponseDTO> {
+    async signIn(data: LoginDTO): Promise<authResponseDTO> {
         try {
             const user: User = await this.userService.findUserByEmail({email: data.email})
 

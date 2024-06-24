@@ -110,7 +110,7 @@
     },
     "/login": {
       "post": {
-        "operationId": "LoginController_async",
+        "operationId": "AuthController_async",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -129,9 +129,9 @@
         }
       }
     },
-    "/login/profile": {
+    "/profile": {
       "get": {
-        "operationId": "LoginController_getProfile",
+        "operationId": "AuthController_getProfile",
         "parameters": [],
         "responses": {
           "200": {

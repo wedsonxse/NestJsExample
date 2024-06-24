@@ -2,7 +2,7 @@ import { IRepository } from "src/common/interfaces/repository.interface.";
 import { User } from "./entities/user.entity";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateUserDto } from "./dto/create-user.dto";
-import { LoginDTO } from "src/login/dto/login.dto";
+import { LoginDTO } from "src/auth/dto/login.dto";
 
 export class UserRepository implements IRepository<User,CreateUserDto>{
 
