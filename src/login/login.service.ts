@@ -3,13 +3,13 @@ import { LoginDTO } from './dto/login.dto';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
 import * as bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken'
+import {JwtService} from '@nestjs/jwt'
 import { authResponseDTO } from './dto/authResponse.dto';
 
 @Injectable()
 export class LoginService {
 
-    constructor(private readonly userService: UserService) {}
+    constructor(private readonly userService: UserService, private readonly jwt: JwtService) {}
 
     async authorize(data: LoginDTO): Promise<authResponseDTO> {
         try {
@@ -21,14 +21,15 @@ export class LoginService {
 
             if(!isMatch) throw new Error('Informações de E-mail/senha incorretas')
             
-            return {token: this.generateToken(user)}
+            return {token: await this.generateToken(user)}
 
         } catch (error) {
             throw new Error(error)
         }
     }
 
-    generateToken(user: User){
-        return jwt.sign({email: user.email},process.env.JWT_SECRET,{expiresIn: '30m'})
+    async generateToken(user: User){
+        const payload = {id: user.id, email: user.email} 
+        return await this.jwt.signAsync(payload)
     }
 }
